@@ -8,36 +8,45 @@ int main()
 {
     int sockfd;
 
-    struct sockaddr_in server_addr;
+    struct sockaddr_in serverAddr;
 
-    char buffer[1024];
+    char str[100];
 
-    // Create TCP socket
-    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    char result[100];
+
+    // Create socket
+    sockfd = socket(AF_INET,
+                    SOCK_STREAM,
+                    0);
 
     // Server details
-    server_addr.sin_family = AF_INET;
-    server_addr.sin_port = htons(8080);
-    server_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
+    serverAddr.sin_family = AF_INET;
+    serverAddr.sin_port = htons(5000);
+    serverAddr.sin_addr.s_addr =
+            inet_addr("127.0.0.1");
 
-    // Connect to server
+    // Connect
     connect(sockfd,
-           (struct sockaddr*)&server_addr,
-           sizeof(server_addr));
+            (struct sockaddr*)&serverAddr,
+            sizeof(serverAddr));
 
-    // Input string
-    printf("Enter string: ");
-    //  scanf("%s", buffer);
-    fgets(buffer, sizeof(buffer), stdin);
+    // Input
+    printf("Enter String : ");
+    scanf("%s", str);
 
-    // Send to server
-    send(sockfd, buffer, strlen(buffer), 0);
+    // Send string
+    send(sockfd,
+         str,
+         sizeof(str),
+         0);
 
     // Receive result
-    recv(sockfd, buffer, sizeof(buffer), 0);
+    recv(sockfd,
+         result,
+         sizeof(result),
+         0);
 
-    // Print result
-    printf("Result from server: %s\n", buffer);
+    printf("Server Says : %s\n", result);
 
     close(sockfd);
 
